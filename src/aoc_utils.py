@@ -1,3 +1,5 @@
+import datetime
+import glob
 import os
 
 import requests
@@ -49,8 +51,10 @@ class AdventOfCodeConnector:
         elif "That's not the right answer" in response.text:
             if "your answer is too low" in response.text:
                 print("Wrong answer, your answer is too low")
-            else:
+            elif "your answer is too high" in response.text:
                 print("Wrong answer, your answer is too high")
+            else:
+                print("Wrong answer")
         elif "You gave an answer too recently" in response.text:
             print(
                 f"You gave an answer too recently, please wait 1 min between each answers"
@@ -82,3 +86,42 @@ def save_input(year: str, day: str, path_file_output: str):
 def submit_answer(year: str, day: str, level: int, answer: int):
     connector = AdventOfCodeConnector(token_session=os.environ["AOC_TOKEN_SESSION"])
     connector.submit_answer(year=year, day=day, level=str(level), answer=str(answer))
+
+
+def is_aoc_season() -> bool:
+    current_time = datetime.datetime.now()
+
+    if current_time.month != 12 or current_time.day < 1 or current_time.day > 25:
+        return False
+    return True
+
+
+def find_module_path_for_problem(
+    year: str, problem_number: str, path_dir_root: str
+) -> str:
+    path_dir_module = os.path.join(
+        path_dir_root,
+        "src",
+        "problems",
+        f"year{year}",
+    )
+    path_file_module = os.path.join(
+        path_dir_module,
+        f"day{problem_number}.py",
+    )
+
+    if os.path.exists(path_file_module):
+        return path_file_module
+
+    # Have not found a simple file, trying to find a single file for this day with an underscore and a name
+    path_file_module = os.path.join(
+        path_dir_module,
+        f"day{problem_number}_*.py",
+    )
+    potential_files = list(glob.glob(path_file_module))
+    if len(potential_files) == 1:
+        return potential_files[0]
+
+    raise ValueError(
+        f"Code for year {year} and day {problem_number} cannot be found {path_file_module}"
+    )

@@ -1,14 +1,8 @@
-import _io
 import copy
 
-import numpy as np
 
-
-def parse_input(fp: _io.FileIO):
-    for row in fp.readlines():
-        row = row.strip()
-        print(row)
-    exit(0)
+def parse_input(data: str):
+    return data.strip()
 
 
 def main(data) -> tuple[int, int]:

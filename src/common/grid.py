@@ -1,6 +1,10 @@
 from typing import Any, Iterable, Generator
 
 
+def grid_init_empty(width: int, height: int, value: Any) -> list[list[Any]]:
+    return [[value for _ in range(width)] for _ in range(height)]
+
+
 def rotate_90_right(grid: list[list[Any]]) -> list[list[Any]]:
     """
     Rotates a 2D grid 90 degrees to the right (clockwise).
@@ -128,7 +132,9 @@ def grid_is_value_adjacent(
 
 
 def grid_iter_adjacent(
-    grid: list[list[Any]], idx: tuple[int, int]
+    grid: list[list[Any]],
+    idx: tuple[int, int],
+    diagonals: bool = False,
 ) -> Iterable[tuple[int, int]]:
     """
     Iterates over all valid adjacent cells of a given index in a 2D grid.
@@ -139,6 +145,8 @@ def grid_iter_adjacent(
     """
     # Define the relative directions for adjacency: up, right, down, left
     directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    if diagonals:
+        directions += [(1, 1), (-1, 1), (1, -1), (-1, -1)]
 
     for direction in directions:
         idx_adjacent = (idx[0] + direction[0], idx[1] + direction[1])
