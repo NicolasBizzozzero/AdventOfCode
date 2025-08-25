@@ -9,6 +9,7 @@ from src.aoc_utils import (
     submit_answer,
     is_aoc_season,
     find_module_path_for_problem,
+    assert_answer,
 )
 from src.common.dates import get_current_problem_number, get_current_year
 from src.common.meta import load_module
@@ -25,7 +26,7 @@ if "AOC_TOKEN_SESSION" not in os.environ:
 
 
 def main(year: str, problem: str):
-    execute_problem(year=year, problem_number=problem, send_answer=True)
+    execute_problem(year=year, problem_number=problem, send_answer=False)
 
 
 def main_whole_year(year: str):
@@ -101,6 +102,9 @@ def execute_problem(year: str, problem_number: str, send_answer: bool):
             raise ValueError(
                 f"Impossible to determine level of answer with those results : {results}"
             )
+    else:
+        # Check answers if the problem has already been resolved
+        assert_answer(year=year, day=problem_number, answers=results)
 
 
 if __name__ == "__main__":

@@ -1,22 +1,16 @@
-def replace_char_at_index(s: str, index: int, new_char: str) -> str:
+def insert_substring(original: str, substring: str, index: int) -> str:
     """
-    Replace the character in a string at a specific index with another character.
+    Inserts a substring into a string at the specified index.
 
-    Parameters:
-    - s (str): The original string.
-    - index (int): The index of the character to replace.
-    - new_char (str): The character to replace with.
+    Args:
+    original (str): The original string.
+    substring (str): The substring to insert.
+    index (int): The index at which to insert the substring.
 
     Returns:
-    - str: The modified string.
-
-    Raises:
-    - ValueError: If the index is out of range.
-    - ValueError: If new_char is not a single character.
+    str: The modified string with the substring inserted.
     """
-    if not (0 <= index < len(s)):
-        raise ValueError("Index is out of range.")
-    if len(new_char) != 1:
-        raise ValueError("new_char must be a single character.")
+    if index < 0 or index > len(original):
+        raise ValueError("Index out of bounds.")
 
-    return s[:index] + new_char + s[index + 1 :]
+    return original[:index] + substring + original[index:]

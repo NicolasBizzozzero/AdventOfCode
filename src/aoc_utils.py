@@ -1,6 +1,8 @@
 import datetime
 import glob
 import os
+import re
+from typing import Any
 
 import requests
 
@@ -42,7 +44,9 @@ class AdventOfCodeConnector:
                 f"Error HTTP {response.status_code}: {response.reason}, {response.text}"
             )
         elif "You don't seem to be solving the right level." in response.text:
-            print("Level already solved, cannot submit answer")
+            print(
+                f"Level already solved, cannot submit answer. Your answer was {self.get_answers(year=year, day=day)[level - 1]}"
+            )
         elif "That's the right answer!" in response.text:
             if "[Continue to Part Two]" in response.text:
                 print("Successfully answered level 1 !")
@@ -61,6 +65,21 @@ class AdventOfCodeConnector:
             )
         else:
             print(f"Error while submitting answer : {response.text}")
+
+    def get_answers(self, year: str, day: str) -> list[int]:
+        url = f"{self.url.format(year=year, day=int(day))}"
+        response = requests.post(
+            url,
+            headers={"Cookie": f"session={self.token_session}"},
+        )
+        if response.status_code != 200:
+            print(
+                f"Error HTTP {response.status_code}: {response.reason}, {response.text}"
+            )
+        matches = re.findall(
+            r"Your puzzle answer was <code>(.*?)</code>", response.text
+        )
+        return [match for match in matches]
 
 
 def get_path_input(path_dir_input: str, problem_number: str, year: str):
@@ -125,3 +144,22 @@ def find_module_path_for_problem(
     raise ValueError(
         f"Code for year {year} and day {problem_number} cannot be found {path_file_module}"
     )
+
+
+def assert_answer(year: str, day: str, answers: tuple[Any, Any]):
+    connector = AdventOfCodeConnector(token_session=os.environ["AOC_TOKEN_SESSION"])
+    correct_answers = connector.get_answers(year=year, day=day)
+
+    if len(correct_answers) == 0:
+        return
+    elif len(correct_answers) == 1:
+        answers = [answers[0]]
+    else:
+        answers = list(answers)
+
+    if correct_answers == answers:
+        print(f"  Your answer(s) are correct")
+    else:
+        print(
+            f"  Your answer(s) are incorrect. Expected {correct_answers}, got {answers}"
+        )
