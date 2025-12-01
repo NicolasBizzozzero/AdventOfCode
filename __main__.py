@@ -22,7 +22,7 @@ if "AOC_TOKEN_SESSION" not in os.environ:
             os.path.dirname(os.path.realpath(__file__)), "AOC_TOKEN_SESSION.txt"
         )
     ) as fp:
-        os.environ["AOC_TOKEN_SESSION"] = fp.read()
+        os.environ["AOC_TOKEN_SESSION"] = fp.read().strip()
 
 
 def main(year: str, problem: str):
@@ -79,7 +79,7 @@ def execute_problem(year: str, problem_number: str, send_answer: bool):
     # Execute it
     t1 = time.time()
     with open(path_file_input, newline="\n") as fp:
-        data = module.parse_input(data=fp.read().strip())
+        data = module.parse_input(fp=fp)
     results = module.main(data)
     t2 = time.time()
 
