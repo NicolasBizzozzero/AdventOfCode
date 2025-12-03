@@ -1,4 +1,6 @@
-from itertools import islice
+from itertools import islice, combinations
+
+from tqdm import tqdm
 
 
 def batched(iterable, n: int, step: int = None, drop_last_if_shorter: bool = False):
@@ -49,3 +51,9 @@ def cycle(iterable: iter):
 def all_elements_except_one(iterable: iter):
     for idx in range(len(iterable)):
         yield iterable[:idx] + iterable[idx + 1 :]
+
+
+def ordered_combinations(iterable: iter, n: int):
+    """Yield all combinations of size n from iterable, preserving the original order of elements."""
+    for indices in tqdm(combinations(range(len(iterable)), n)):
+        yield "".join(iterable[i] for i in indices)
