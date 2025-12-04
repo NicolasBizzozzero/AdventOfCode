@@ -45,7 +45,7 @@ class AdventOfCodeConnector:
             )
         elif "You don't seem to be solving the right level." in response.text:
             print(
-                f"Level already solved, cannot submit answer. Your answer was {self.get_answers(year=year, day=day)[level - 1]}"
+                f"Level already solved, cannot submit answer. Your answer was {self.get_answers(year=year, day=day)[int(level) - 1]}"
             )
         elif "That's the right answer!" in response.text:
             if "[Continue to Part Two]" in response.text:

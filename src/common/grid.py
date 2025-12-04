@@ -187,7 +187,7 @@ def iter_grid(grid: list[list[Any]]) -> Iterable[Any]:
 
 def iter_grid_idx(grid: list[list[Any]]) -> Iterable[tuple[int, int]]:
     """
-    Iterates through each element in a 2D grid, yielding its indices and value.
+    Iterates through each element in a 2D grid, yielding its indices.
 
     Args:
         grid (list[list[Any]]): A 2D list to iterate over.
