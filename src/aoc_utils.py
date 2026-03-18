@@ -149,13 +149,14 @@ def find_module_path_for_problem(
 def assert_answer(year: str, day: str, answers: tuple[Any, Any]):
     connector = AdventOfCodeConnector(token_session=os.environ["AOC_TOKEN_SESSION"])
     correct_answers = connector.get_answers(year=year, day=day)
+    correct_answers = list(map(int, correct_answers))
 
     if len(correct_answers) == 0:
         return
     elif len(correct_answers) == 1:
-        answers = [answers[0]]
+        answers = [int(answers[0])]
     else:
-        answers = list(answers)
+        answers = list(map(int, answers))
 
     if correct_answers == answers:
         print(f"  Your answer(s) are correct")

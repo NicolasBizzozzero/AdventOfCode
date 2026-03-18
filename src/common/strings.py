@@ -14,3 +14,7 @@ def insert_substring(original: str, substring: str, index: int) -> str:
         raise ValueError("Index out of bounds.")
 
     return original[:index] + substring + original[index:]
+
+
+def str_replace_by_index(string: str, idx: int, character: str) -> str:
+    return string[:idx] + character + string[idx + 1 :]
