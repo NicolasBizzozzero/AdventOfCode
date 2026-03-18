@@ -113,4 +113,4 @@ if __name__ == "__main__":
         main_aoc_season()
         exit(0)
 
-    main(year="2015", problem="19")
+    main(year="2025", problem="06")
